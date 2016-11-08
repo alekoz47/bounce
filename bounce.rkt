@@ -65,8 +65,7 @@
                        (+ (round-five (pos-y (ball-pos b)))
                           (* (ball-speed b)
                              (round-five (vel-y (ball-vel b))))))
-             (make-vel (vel-x (ball-vel b))
-                       (vel-y (ball-vel b)))
+             (ball-vel b)
              (ball-speed b)
              (ball-radius b)))
 
@@ -122,40 +121,26 @@
 ;;d: ball-speed + 1, a: ball-speed - 1, w: ball-radius + 1, s: ball-radius - 1
 (define (handle-key b ke)
   (cond [(key=? ke "d")
-         (make-ball (make-pos (round-five (pos-x (ball-pos b)))
-                              (round-five (pos-y (ball-pos b))))
-                    (make-vel (round-five (vel-x (ball-vel b)))
-                              (round-five (vel-y (ball-vel b))))
+         (make-ball (ball-pos b)
+                    (ball-vel v)
                     (+ (ball-speed b) 1)
                     (ball-radius b))]
         [(key=? ke "a")
-         (make-ball (make-pos (round-five (pos-x (ball-pos b)))
-                              (round-five (pos-y (ball-pos b))))
-                    (make-vel (round-five (vel-x (ball-vel b)))
-                              (round-five (vel-y (ball-vel b))))
+         (make-ball (ball-pos b)
+                    (ball-vel b)
                     (- (ball-speed b) 1)
                     (ball-radius b))]
         [(key=? ke "w") 
-         (make-ball (make-pos (round-five (pos-x (ball-pos b)))
-                              (round-five (pos-y (ball-pos b))))
-                    (make-vel (round-five (vel-x (ball-vel b)))
-                              (round-five (vel-y (ball-vel b))))
+         (make-ball (ball-pos b)
+                    (ball-vel b)
                     (ball-speed b)
                     (+ (ball-radius b) 1))]
         [(key=? ke "s") 
-         (make-ball (make-pos (round-five (pos-x (ball-pos b)))
-                              (round-five (pos-y (ball-pos b))))
-                    (make-vel (round-five (vel-x (ball-vel b)))
-                              (round-five (vel-y (ball-vel b))))
+         (make-ball (ball-pos b)
+                    (ball-vel b)
                     (ball-speed b)
                     (decrease-ball-radius b))]
-        [else 
-         (make-ball (make-pos (round-five (pos-x (ball-pos b)))
-                              (round-five (pos-y (ball-pos b))))
-                    (make-vel (round-five (vel-x (ball-vel b)))
-                              (round-five (vel-y (ball-vel b))))
-                    (ball-speed b)
-                    (ball-radius b))]))
+        [else b]))
 
 ;;Ball -> Ball
 ;;decreases ball radius by one if not zero
@@ -172,12 +157,7 @@
                       (sqr (- (pos-y (ball-pos b)) y))))
              (ball-radius b))
          (ball-moving? b x y me)]
-        [else (make-ball (make-pos (pos-x (ball-pos b))
-                                   (pos-y (ball-pos b)))
-                         (make-vel (vel-x (ball-vel b))
-                                   (vel-y (ball-vel b)))
-                         (ball-speed b)
-                         (ball-radius b))]))
+        [else b]))
 
 ;;Ball MouseEvent -> Ball
 ;;determines if ball is stopped or moving, then relays stop or start functions
@@ -192,34 +172,22 @@
 ;!!!
 (define (ball-stop-mouse b x y me)
   (cond [(mouse=? me "button-down")
-         (make-ball (make-pos (pos-x (ball-pos b))
-                              (pos-y (ball-pos b)))
+         (make-ball (ball-pos b)
                     (make-vel 0 0)
                     (ball-speed b)
                     (ball-radius b))]
-        [else (make-ball (make-pos (pos-x (ball-pos b))
-                                   (pos-y (ball-pos b)))
-                         (make-vel (vel-x (ball-vel b))
-                                   (vel-y (ball-vel b)))
-                         (ball-speed b)
-                         (ball-radius b))]))
+        [else b]))
 
 ;;Ball MouseEvent -> Ball
 ;;on button-down, restart ball
 ;;!!!
 (define (ball-start-mouse b x y me)
   (cond [(mouse=? me "button-down")
-         (make-ball (make-pos (pos-x (ball-pos b))
-                              (pos-y (ball-pos b)))
+         (make-ball (ball-pos b)
                     (make-vel (/ (sqrt 3) 2) (/ 1 2))
                     (ball-speed b)
                     (ball-radius b))]
-        [else (make-ball (make-pos (pos-x (ball-pos b))
-                                   (pos-y (ball-pos b)))
-                         (make-vel (vel-x (ball-vel b))
-                                   (vel-y (ball-vel b)))
-                         (ball-speed b)
-                         (ball-radius b))]))
+        [else b]))
 
 ;;================
 ;;Run:
