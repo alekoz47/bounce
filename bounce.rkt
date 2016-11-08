@@ -7,12 +7,6 @@
 
 ;;a ball that bounces off the walls of the window like a billiards ball
 
-;todo: 
-;- gravity on missed mousedown
-;- create random angle function to generate unit vector for ball-start-mouse
-;- create rotating color function
-;- fix origin to bottom left
-
 ;;================
 ;;Constants:
 
@@ -23,27 +17,19 @@
 ;;================
 ;;Data definitions:
 
-(define-struct pos (x y))
-;;Position is (make-pos Number[0, WIDTH-MOD] Number[0, HEIGHT-MOD])
-
+(define-struct point (x y))
+;;Position is (make-point Number Number)
 #;
-(define (fn-for-pos p)
-  (... (pos-x p)
-       (pos-y p)))
+(define (fn-for-point p)
+  (... (point-x p)
+       (point-y p)))
 
-(define-struct vel (x y))
-;;Velocity is (make-vel Number[-1, 1] Number[-1, 1])
-#;
-(define (fn-for-vel v)
-  (... (vel-x v)
-       (vel-y v)))
-
-(define-struct ball (pos vel speed radius))
-;;Ball is (make-ball Position Velocity Number Number)
+(define-struct ball (position velocity speed radius))
+;;Ball is (make-ball Point Point Number Number)
 #;
 (define (fn-for-ball b)
-  (... (fn-for-pos (ball-pos b))
-       (fn-for-vel (ball-vel b))
+  (... (fn-for-point (ball-position b))
+       (fn-for-point (ball-velocity b))
        (ball-speed b)
        (ball-radius b)))
 
